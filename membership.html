@@ -101,6 +101,9 @@
       <tbody>
         <tr><td data-t="photos"></td><td class="v" id="freePhotos"></td><td class="v plus" id="plusPhotos"></td></tr>
         <tr><td data-t="videos"></td><td class="v" id="freeVideos"></td><td class="v plus" id="plusVideos"></td></tr>
+        <tr><td data-t="upDaily"></td><td class="v" id="freeDaily"></td><td class="v plus" data-t="unlimited"></td></tr>
+        <tr><td data-t="upMonthly"></td><td class="v" id="freeMonthly"></td><td class="v plus" data-t="unlimited"></td></tr>
+        <tr><td data-t="videoSize"></td><td class="v">100MB</td><td class="v plus">300MB</td></tr>
         <tr><td data-t="both"></td><td class="v">—</td><td class="v plus">✓</td></tr>
       </tbody>
     </table>
@@ -123,12 +126,13 @@
 
   <script>
     // 앱 RecordRules와 같은 한도. 혜택을 바꾸면 앱·서버(records 트리거)·이 표를 함께 바꾼다.
-    const LIMITS = { freePhotos: 3, plusPhotos: 30, freeVideos: 1, plusVideos: 5 };
+    const LIMITS = { freePhotos: 3, plusPhotos: 30, freeVideos: 1, plusVideos: 5, dayPhotos: 3, dayVideos: 1, monthPhotos: 30, monthVideos: 10 };
     const PRODUCTS = ["dearlove.membership.yearly", "dearlove.membership.monthly"];
 
     // 용어는 앱 docs/glossary.md를 따른다(멤버십, 우표첩, 추억, 가입 중).
     const T = {
       ko: {
+        upDaily: "하루 올리기", upMonthly: "한 달 올리기", videoSize: "동영상 파일 크기", unlimited: "제한 없음", pv: "사진 {p} · 동영상 {v}",
         title: "디어러브 멤버십", lead: "한 사람이 가입하면 커플 우표첩의 두 사람이 함께 써요.",
         active: "멤버십 가입 중", benefits: "멤버십 혜택", free: "무료", membership: "멤버십",
         photos: "추억 하나의 사진", videos: "추억 하나의 동영상", both: "커플 두 사람 모두",
@@ -146,6 +150,7 @@
         terms: "이용약관", privacy: "개인정보처리방침",
       },
       en: {
+        upDaily: "Uploads per day", upMonthly: "Uploads per month", videoSize: "Video file size", unlimited: "No limit", pv: "Photos {p} · Videos {v}",
         title: "DearLove Membership", lead: "One person joins, and both of you in your couple stamp book get it.",
         active: "Membership active", benefits: "What you get", free: "Free", membership: "Membership",
         photos: "Photos per memory", videos: "Videos per memory", both: "Both of you as a couple",
@@ -163,6 +168,7 @@
         terms: "Terms of Use", privacy: "Privacy Policy",
       },
       ja: {
+        upDaily: "1日のアップロード", upMonthly: "1か月のアップロード", videoSize: "動画のファイルサイズ", unlimited: "上限なし", pv: "写真{p} · 動画{v}",
         title: "DearLove メンバーシップ", lead: "ひとりが加入すると、カップルの切手帳のふたりが一緒に使えます。",
         active: "メンバーシップ加入中", benefits: "メンバーシップの特典", free: "無料", membership: "メンバーシップ",
         photos: "思い出ひとつの写真", videos: "思い出ひとつの動画", both: "カップルのふたりとも",
@@ -180,6 +186,7 @@
         terms: "利用規約", privacy: "プライバシーポリシー",
       },
       "zh-CN": {
+        upDaily: "每天上传", upMonthly: "每月上传", videoSize: "视频文件大小", unlimited: "不限", pv: "照片 {p} · 视频 {v}",
         title: "DearLove 会员", lead: "一个人开通，情侣集邮册里的两个人都能用。",
         active: "会员已开通", benefits: "会员权益", free: "免费", membership: "会员",
         photos: "每条回忆的照片", videos: "每条回忆的视频", both: "情侣两人共享",
@@ -224,6 +231,8 @@
     $("plusPhotos").textContent = fill(t.photoN, { n: LIMITS.plusPhotos });
     $("freeVideos").textContent = fill(t.videoN, { n: LIMITS.freeVideos });
     $("plusVideos").textContent = fill(t.videoN, { n: LIMITS.plusVideos });
+    $("freeDaily").textContent = fill(t.pv, { p: LIMITS.dayPhotos, v: LIMITS.dayVideos });
+    $("freeMonthly").textContent = fill(t.pv, { p: LIMITS.monthPhotos, v: LIMITS.monthVideos });
     t.soon.forEach((s) => { const li = document.createElement("li"); li.textContent = s; $("soon").appendChild(li); });
     $("fine").innerHTML = "";
     $("fine").append(fill(t.fine, { store }), document.createElement("br"));
