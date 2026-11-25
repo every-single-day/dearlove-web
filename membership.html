@@ -293,7 +293,8 @@
       const available = state.canPurchase && state.products.some((p) => p.id === selected);
       $("purchase").disabled = !available || state.busy;
       $("purchase").textContent = state.busy ? t.joining : t.join;
-      $("restore").disabled = !state.canPurchase || state.busy;
+      // 가입하는 중에도 복원은 끄지 않는다. 앱이 진행 중인 결제가 끝날 때까지 복원 요청을 무시한다(MembershipScreen).
+      $("restore").disabled = !state.canPurchase;
       if (inApp && state.ready && !state.canPurchase && !member) $("purchase").textContent = t.noStore;
     }
 
